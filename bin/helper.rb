@@ -1,6 +1,8 @@
 require 'pathname'
 require 'tmpdir'
 require 'ostruct'
+
+ENV['BUNDLE_GEMFILE'] = Pathname.new(File.dirname(__FILE__)).join('../Gemfile').to_s
 require 'bundler'
 Bundler.require
 
