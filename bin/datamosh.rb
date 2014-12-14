@@ -11,7 +11,7 @@ Usage:
 
 Options:
   -o <outfile>   Set output file name.
-  -s <start>     Set begining position of repeating as sec [default: 0].
+  -s <start>     Set begining position of datamoshing as sec [default: 0].
   --raw          Keep output as no-keyframe avi [default: false].
   --decap        Remain repeated frames only [default: false].
   --debug        Flag for debugging [default: false].
