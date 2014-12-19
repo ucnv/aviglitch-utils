@@ -13,7 +13,7 @@ Options:
   -o <outfile>   Set output file name.
   -s <start>     Set begining position of datamoshing as sec [default: 0].
   --raw          Keep output as no-keyframe avi [default: false].
-  --decap        Remain repeated frames only [default: false].
+  --decap        Remain datamoshed frames only [default: false].
   --debug        Flag for debugging [default: false].
   -h --help      Show this screen.
 DOC
