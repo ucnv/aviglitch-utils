@@ -21,11 +21,11 @@ DOC
 begin
   options = Docopt::docopt doc
   mktmpdir(options['--debug']) do |tmpdir|
-    cmd = Cocaine::CommandLine.new 'ffmpeg', '-i :infile -c:v mpeg4 -y -q:v 0 -an :outfile'
+    cmd = Terrapin::CommandLine.new 'ffmpeg', '-i :infile -c:v mpeg4 -y -q:v 0 -an :outfile'
     infile = options['<infile>']
     avifile = tmpdir.join('mpeg4.avi')
     cmd.run infile: infile, outfile: avifile.to_s
-    cmd = Cocaine::CommandLine.new 'ffmpeg', '-i :infile 2>&1', :expected_outcodes => [0, 1]
+    cmd = Terrapin::CommandLine.new 'ffmpeg', '-i :infile 2>&1', :expected_outcodes => [0, 1]
     info = cmd.run infile: avifile.to_s
     fps = (info =~ /, ([\.\d]*) fp/) ? $1 : 24
     start_at = (fps.to_f * options['-s'].to_f).to_i
@@ -38,9 +38,9 @@ begin
     glitchfile = tmpdir.join 'glitch.avi'
     datamoshed.output glitchfile
     if options['--raw']
-      cmd = Cocaine::CommandLine.new 'cp', ':infile :outfile'
+      cmd = Terrapin::CommandLine.new 'cp', ':infile :outfile'
     else
-      cmd = Cocaine::CommandLine.new 'ffmpeg', '-i :infile -an -q:v 0 :outfile'
+      cmd = Terrapin::CommandLine.new 'ffmpeg', '-i :infile -an -q:v 0 :outfile'
     end
     cmd.run infile: glitchfile.to_s, outfile: options['-o']
   end

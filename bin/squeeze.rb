@@ -22,21 +22,21 @@ begin
   options = Docopt::docopt doc
   mktmpdir(options['--debug']) do |tmpdir|
     infile = options['<infile>']
-    cmd = Cocaine::CommandLine.new 'ffmpeg', '-i :infile 2>&1', :expected_outcodes => [0, 1]
+    cmd = Terrapin::CommandLine.new 'ffmpeg', '-i :infile 2>&1', :expected_outcodes => [0, 1]
     info = cmd.run infile: infile
     size = (info =~ /(\d{3,})x(\d{3,})/) ? [$1.to_i, $2.to_i] : [1024, 768]
     fps = (info =~ /, ([\.\d]*) fp/) ? $1 : 24
     bfile = infile
     if options['-b']
       bfile = options['-b']
-      cmd = Cocaine::CommandLine.new 'ffmpeg', '-loop 1 -f image2 -i :infile -c:v mpeg4 -y -q:v 0 -r :fps -t 0.5 -an :outfile'
+      cmd = Terrapin::CommandLine.new 'ffmpeg', '-loop 1 -f image2 -i :infile -c:v mpeg4 -y -q:v 0 -r :fps -t 0.5 -an :outfile'
     else
-      cmd = Cocaine::CommandLine.new 'ffmpeg', '-i :infile -c:v mpeg4 -y -q:v 0 -t 0.5 -r :fps -an :outfile'
+      cmd = Terrapin::CommandLine.new 'ffmpeg', '-i :infile -c:v mpeg4 -y -q:v 0 -t 0.5 -r :fps -an :outfile'
     end
     basefile = tmpdir.join('base.avi')
     cmd.run infile: bfile, outfile: basefile.to_s, fps: fps
 
-    cmd = Cocaine::CommandLine.new 'ffmpeg', '-i :infile -c:v mpeg4 -y -q:v 0 -vf scale=:scale -an :outfile'
+    cmd = Terrapin::CommandLine.new 'ffmpeg', '-i :infile -c:v mpeg4 -y -q:v 0 -vf scale=:scale -an :outfile'
     avifile = tmpdir.join('mpeg4resized.avi')
     size.collect! {|x| x / options['-r'].to_f }
     cmd.run infile: infile, outfile: avifile.to_s, scale: ("%d:%d" % size)
@@ -52,9 +52,9 @@ begin
     glitchfile = tmpdir.join 'glitch.avi'
     base.output glitchfile
     if options['--raw']
-      cmd = Cocaine::CommandLine.new 'cp', ':infile :outfile'
+      cmd = Terrapin::CommandLine.new 'cp', ':infile :outfile'
     else
-      cmd = Cocaine::CommandLine.new 'ffmpeg', '-i :infile -an -q:v 0 -y :outfile'
+      cmd = Terrapin::CommandLine.new 'ffmpeg', '-i :infile -an -q:v 0 -y :outfile'
     end
     cmd.run infile: glitchfile.to_s, outfile: options['-o']
   end

@@ -24,7 +24,7 @@ begin
     other_options = ''
     other_options += ' -t ' + options['-d']
     other_options += ' -ss ' + options['-s'] if options['-s']
-    cmd = Cocaine::CommandLine.new 'ffmpeg', '-i :infile %s -c:v huffyuv -pix_fmt yuv422p -y -q:v 0 -an :outfile' % other_options
+    cmd = Terrapin::CommandLine.new 'ffmpeg', '-i :infile %s -c:v huffyuv -pix_fmt yuv422p -y -q:v 0 -an :outfile' % other_options
     huffyuvfile = tmpdir.join('huffyuv.avi')
     cmd.run infile: options['<infile>'], outfile: huffyuvfile.to_s
     a = AviGlitch.open huffyuvfile
@@ -39,7 +39,7 @@ begin
     end
     glitchfile = tmpdir.join 'glitch.avi'
     a.output glitchfile
-    cmd = Cocaine::CommandLine.new 'avconv', '-i :infile -an -q:v 0 -c:v mpeg4 :outfile'
+    cmd = Terrapin::CommandLine.new 'avconv', '-i :infile -an -q:v 0 -c:v mpeg4 :outfile'
     cmd.run infile: glitchfile.to_s, outfile: options['-o']
   end
 rescue Docopt::Exit => e

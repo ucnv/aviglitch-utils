@@ -18,7 +18,7 @@ DOC
 begin
   options = Docopt::docopt doc
   mktmpdir(options['--debug']) do |tmpdir|
-    cmd = Cocaine::CommandLine.new 'ffmpeg', '-i :infile -c:v mpeg4 -y -q:v 0 -an :outfile'
+    cmd = Terrapin::CommandLine.new 'ffmpeg', '-i :infile -c:v mpeg4 -y -q:v 0 -an :outfile'
     avi = nil
     options['<infile>'].each.with_index do |infile, i|
       avifile = tmpdir.join('mpeg4.avi')
@@ -39,7 +39,7 @@ begin
     end
     glitchfile = tmpdir.join 'glitch.avi'
     avi.output glitchfile
-    cmd = Cocaine::CommandLine.new 'ffmpeg', '-i :infile -an -q:v 0 :outfile'
+    cmd = Terrapin::CommandLine.new 'ffmpeg', '-i :infile -an -q:v 0 :outfile'
     cmd.run infile: glitchfile.to_s, outfile: options['-o']
   end
 rescue Docopt::Exit => e

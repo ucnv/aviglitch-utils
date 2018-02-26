@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-gem 'cocaine'
+gem 'terrapin'
 gem 'aviglitch'
 gem 'docopt'
 gem 'colorize'
