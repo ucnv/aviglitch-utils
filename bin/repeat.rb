@@ -43,7 +43,7 @@ begin
     if options['--raw']
       cmd = Terrapin::CommandLine.new 'cp', ':infile :outfile'
     else
-      cmd = Terrapin::CommandLine.new 'ffmpeg', '-i :infile -an -q:v 0 :outfile'
+      cmd = Terrapin::CommandLine.new 'ffmpeg', '-i :infile -an -q:v 0 -y :outfile'
     end
     cmd.run infile: glitchfile.to_s, outfile: options['-o']
   end

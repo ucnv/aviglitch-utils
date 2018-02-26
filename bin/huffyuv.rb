@@ -6,14 +6,15 @@ doc = <<-DOC.gsub '__FILE__', File.basename($0)
 Glitch with Huffyuv codec.
 
 Usage:
-  __FILE__ <infile> [-s <n> -d <n> -h <n> -r <n-m>] -o <outfile> [--debug]
+  __FILE__ <infile> [-s <n> -d <n> -h <n> -r <n-m> --raw] -o <outfile> [--debug]
   __FILE__ -h | --help
 
 Options:
   -o <outfile>  Set output file name.
-  -d <n>        Set video duration by seconds. It is preferred to be less than 60s. [default: 30].
+  -d <n>        Set video duration in seconds. It is preferred to be less than 60s. [default: 30].
   -r <n-m>      Set range in height of the glitch effect. It should be between 0 and 1. Or you can set increase-decrease value like "0.1-0.9" [default: 0.99].
   -s <n>        Set start position of the video by seconds.
+  --raw         Keep output as damaged avi [default: false].
   --debug       Flag for debugging [default: false].
   -h --help     Show this screen.
 DOC
@@ -39,7 +40,11 @@ begin
     end
     glitchfile = tmpdir.join 'glitch.avi'
     a.output glitchfile
-    cmd = Terrapin::CommandLine.new 'avconv', '-i :infile -an -q:v 0 -c:v mpeg4 :outfile'
+    if options['--raw']
+      cmd = Terrapin::CommandLine.new 'cp', ':infile :outfile'
+    else
+      cmd = Terrapin::CommandLine.new 'ffmpeg', '-i :infile -an -q:v 0 -c:v mpeg4 -y :outfile'
+    end
     cmd.run infile: glitchfile.to_s, outfile: options['-o']
   end
 rescue Docopt::Exit => e

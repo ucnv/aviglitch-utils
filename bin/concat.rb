@@ -39,7 +39,7 @@ begin
     end
     glitchfile = tmpdir.join 'glitch.avi'
     avi.output glitchfile
-    cmd = Terrapin::CommandLine.new 'ffmpeg', '-i :infile -an -q:v 0 :outfile'
+    cmd = Terrapin::CommandLine.new 'ffmpeg', '-i :infile -an -q:v 0 -y :outfile'
     cmd.run infile: glitchfile.to_s, outfile: options['-o']
   end
 rescue Docopt::Exit => e
